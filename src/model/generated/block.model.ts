@@ -1,5 +1,10 @@
+import {
+  Entity as Entity_,
+  Column as Column_,
+  PrimaryColumn as PrimaryColumn_,
+  Index as Index_,
+} from 'typeorm';
 import * as marshal from './marshal';
-import { Column as Column_, Entity as Entity_, PrimaryColumn as PrimaryColumn_ } from 'typeorm';
 
 @Entity_()
 export class Block {
@@ -10,9 +15,11 @@ export class Block {
   @PrimaryColumn_()
   id!: string;
 
+  @Index_({ unique: true })
   @Column_('numeric', { transformer: marshal.bigintTransformer, nullable: false })
   number!: bigint;
 
+  @Index_()
   @Column_('numeric', { transformer: marshal.bigintTransformer, nullable: false })
   timestamp!: bigint;
 
