@@ -1,7 +1,7 @@
 type Block @entity {
   id: ID!
-  number: BigInt!
-  timestamp: BigInt!
+  number: BigInt! @index @unique
+  timestamp: BigInt! @index
   parentHash: String
   author: String
   difficulty: BigInt

@@ -8,7 +8,6 @@ export interface Marshal<T, S> {
 export const string: Marshal<string, string> = {
   fromJSON(value: unknown): string {
     assert(typeof value === 'string', 'invalid String');
-
     return value;
   },
   toJSON(value) {
@@ -21,7 +20,6 @@ export const id = string;
 export const int: Marshal<number, number> = {
   fromJSON(value: unknown): number {
     assert(Number.isInteger(value), 'invalid Int');
-
     return value as number;
   },
   toJSON(value) {
@@ -32,7 +30,6 @@ export const int: Marshal<number, number> = {
 export const float: Marshal<number, number> = {
   fromJSON(value: unknown): number {
     assert(typeof value === 'number', 'invalid Float');
-
     return value as number;
   },
   toJSON(value) {
@@ -43,7 +40,6 @@ export const float: Marshal<number, number> = {
 export const boolean: Marshal<boolean, boolean> = {
   fromJSON(value: unknown): boolean {
     assert(typeof value === 'boolean', 'invalid Boolean');
-
     return value;
   },
   toJSON(value: boolean): boolean {
@@ -54,7 +50,6 @@ export const boolean: Marshal<boolean, boolean> = {
 export const bigint: Marshal<bigint, string> = {
   fromJSON(value: unknown): bigint {
     assert(typeof value === 'string', 'invalid BigInt');
-
     return BigInt(value);
   },
   toJSON(value: bigint): string {
@@ -65,7 +60,6 @@ export const bigint: Marshal<bigint, string> = {
 export const bigdecimal: Marshal<any, string> = {
   fromJSON(value: unknown): bigint {
     assert(typeof value === 'string', 'invalid BigDecimal');
-
     return decimal.BigDecimal(value);
   },
   toJSON(value: any): string {
@@ -85,7 +79,6 @@ export const datetime: Marshal<Date, string> = {
   fromJSON(value: unknown): Date {
     assert(typeof value === 'string', 'invalid DateTime');
     assert(isIsoDateTimeString(value), 'invalid DateTime');
-
     return new Date(value);
   },
   toJSON(value: Date): string {
@@ -98,7 +91,6 @@ export const bytes: Marshal<Uint8Array, string> = {
     assert(typeof value === 'string', 'invalid Bytes');
     assert(value.length % 2 === 0, 'invalid Bytes');
     assert(/^0x[0-9a-f]+$/i.test(value), 'invalid Bytes');
-
     return Buffer.from(value.slice(2), 'hex');
   },
   toJSON(value: Uint8Array): string {
@@ -112,13 +104,11 @@ export const bytes: Marshal<Uint8Array, string> = {
 
 export function fromList<T>(list: unknown, f: (val: unknown) => T): T[] {
   assert(Array.isArray(list));
-
   return list.map((val) => f(val));
 }
 
 export function nonNull<T>(val: T | undefined | null): T {
   assert(val != null, 'non-nullable value is null');
-
   return val;
 }
 
@@ -151,9 +141,8 @@ export const bigdecimalTransformer = {
 
 export function enumFromJson<E extends object>(json: unknown, enumObject: E): E[keyof E] {
   assert(typeof json == 'string', 'invalid enum value');
-  const val = (enumObject as any)[json];
+  let val = (enumObject as any)[json];
   assert(typeof val == 'string', `invalid enum value`);
-
   return val as any;
 }
 
