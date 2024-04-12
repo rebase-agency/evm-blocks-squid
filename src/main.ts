@@ -1,4 +1,6 @@
+import { BLOCK_TIMESTAMP_UNITS } from './configuration/values';
 import { Block } from './model';
+import { BlockTimestampUnits } from './constants';
 import { DataHandlerContext } from '@subsquid/evm-processor/src/processor';
 import { Fields, processor } from './processor';
 import { Store, TypeormDatabase } from '@subsquid/typeorm-store';
@@ -11,7 +13,10 @@ const blocksHandler = async (ctx: DataHandlerContext<Store, Fields>) => {
       new Block({
         id: block.header.id,
         number: BigInt(block.header.height),
-        timestamp: BigInt(block.header.timestamp),
+        timestamp:
+          BLOCK_TIMESTAMP_UNITS === BlockTimestampUnits.s
+            ? BigInt(Math.floor(block.header.timestamp / 1000))
+            : BigInt(block.header.timestamp),
         parentHash: block.header?.parentHash,
         author: block.header.miner,
         difficulty: block.header.difficulty,
